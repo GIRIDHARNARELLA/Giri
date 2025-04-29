@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<head>
+    <title>Exam Seating Allocation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color:rgb(126, 178, 199);
+        }
+        h1 {
+            color: #333;
+        }
+        #result{
+            display: inline-block;
+            text-align: left;
+            font-size: 20px;
+            border: 2px solid transparent;
+            padding: 50px;
+            border-radius: 10px;
+            background-color: transparent;
+
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .image-container img {
+            width: 1500px;
+            height: 200px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .start-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="{% static 'images/image.jpg' %}" alt="image cant be displayed">
+        </div>
+        <h1><b>Check Your Exam Room Number and Seat Number</b></h1>
+        <button class="start-button" onclick="startScan()">Scan Barcode</button><br>
+        <h2 style="color:black;font-size: larger;" id="result"></h2>
+    </div>
+    <script>
+        function startScan() {
+            fetch('/scan/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("result").innerText = data.error;
+                } else {
+                    document.getElementById("result").innerText = 
+                        `Roll No: ${data.roll_number}
+                         Name:    ${data.name} 
+                        Department: ${data.department}
+                        Room No: ${data.room}  
+                        Seat No: ${data.seat} 
+                        Status: ${data.status}`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
